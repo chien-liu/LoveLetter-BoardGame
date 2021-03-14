@@ -1,27 +1,21 @@
 #include <iostream>
 
-#include "loveletter.h"
+#include "game.h"
 #include <time.h>
 #include <random>
-using namespace std;
+
 
 int main(int argc, char *argv[]) {
-  srand(time(0));
-  int n_player;
-  if (argc > 1) {
-    n_player = atoi(argv[1]);
-  } else {
-    n_player = 4;
-  }
+  srand(time(NULL));
 
-  LoveLetter game(n_player);
+  loveletter::Game game(4);   // 4 players
 
   game.printStartMsg();
 
-  while (!game.end()) {
+  while (!game.isEnd()) {
     game.drawCard();
     game.printPlayer();
-    game.action();
+    game.executeAction();
     game.update();
     game.checkEnd();
   }
