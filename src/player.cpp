@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include <algorithm>
 #include <iostream>
@@ -32,6 +33,12 @@ void Player::discard() {
   handCards.pop_back();
 }
 
+void Player::switchCard(Card other) {
+  handCards.pop_back();
+  draw(other);
+  assert(handCards.size() == 1);
+}
+
 std::vector<int> Player::getAvailCardId() {
   // princess
   if (handCards[0] == Card(8))
@@ -54,7 +61,7 @@ std::vector<int> Player::getAvailCardId() {
 PlayerAction AI::executeAction(std::vector<int> avail_playerId) {
   assert(handCards.size() == 2 &&
          "Execute an action when holding cards less than 2.");
-
+  sleep(3);
   std::vector<int> avail_card = getAvailCardId();
   PlayerAction action;
 
@@ -101,7 +108,7 @@ static int HumanChoosePlayerInterface(std::vector<int> avail_playerId) {
   if (avail_playerId.size() == 1) {
     std::cout << "Only one player can be chosen: Player "
               << avail_playerId.back() << std::endl;
-    system("pause");
+    // system("pause");
     return avail_playerId.back();
   }
 
@@ -113,7 +120,12 @@ static int HumanChoosePlayerInterface(std::vector<int> avail_playerId) {
       std::cout << ", " << *it;
     }
     std::cout << ")" << std::endl;
+
     std::cin >> playerId;
+    if (std::cin.fail()) {
+      std::cin.clear();
+      std::cin.ignore(256, '\n');
+    }
 
     if (std::find(avail_playerId.begin(), avail_playerId.end(), playerId) !=
         avail_playerId.end())
@@ -156,7 +168,7 @@ PlayerAction Human::executeAction(std::vector<int> avail_playerId) {
   // Further decision
   if (avail_playerId.empty()) {
     std::cout << "No any available player to be chosen. ";
-    system("pause");  // Press any key to continue . . .
+    // system("pause");  // Press any key to continue . . .
     return action;
   }
 

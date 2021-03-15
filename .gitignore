@@ -1,0 +1,11 @@
+# executables
+bin/*
+unittest/testCard
+unittest/testPlayer
+unittest/testGame
+
+# objects
+object/*.o
+
+# folders
+.vscode/*

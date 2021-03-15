@@ -22,4 +22,6 @@ int main(int argc, char *argv[]) {
 
   game.updateWinner();
   game.printEndMsg();
+
+  return 0;
 }

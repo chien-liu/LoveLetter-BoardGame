@@ -30,6 +30,8 @@ class Player {
   std::vector<Card> getHandCard() const { return handCards; }
   void discard();
   virtual PlayerAction executeAction(std::vector<int> avail_playerId) = 0;
+  void switchCard(Card card);
+  virtual ~Player(){};
 
  protected:
   std::vector<int> getAvailCardId();

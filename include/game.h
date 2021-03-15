@@ -24,13 +24,13 @@ class Game {
 
  private:
   const int n_player;
-  std::vector<Player*> players;
-  int currentPlayerId;
-  CardPool pool;
-  PlayerAction action;
   int round;
   bool end;
-  int winnerId;
+  CardPool pool;
+  std::vector<Player*> players;
+  int currentPlayerId;
+  PlayerAction action;
+  std::vector<int> winnerIds;
 
  private:
   void constructPlayers();

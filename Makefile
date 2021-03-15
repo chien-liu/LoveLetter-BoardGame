@@ -15,9 +15,10 @@ vpath %.o object
 vpath % bin:unittest
 
 cc = g++
-CCFLAG = -I$(include_dir)
+CCFLAG = -I$(include_dir) -Wall
 
 $(LINK_TARGET): main.o card.o player.o game.o 
+	if [ ! -d $(bin_dir) ]; then mkdir $(bin_dir); fi
 	$(cc) -o $@ $^
 
 $(object_dir)/card.o: card.cpp
@@ -30,6 +31,7 @@ $(object_dir)/game.o: game.cpp
 	$(cc) -c -o $@ $< $(CCFLAG)
 
 $(object_dir)/main.o: main.cpp
+	if [ ! -d $(object_dir) ]; then mkdir $(object_dir); fi
 	$(cc) -c -o $@ $< $(CCFLAG)
 
 clean:

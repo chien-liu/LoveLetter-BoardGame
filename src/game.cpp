@@ -11,9 +11,9 @@
 namespace loveletter {
 Game::Game(const int n)
     : n_player(n),
-      pool(n_player),
       round(1),
       end(false),
+      pool(n_player),
       currentPlayerId(rand() % n_player) {
   constructPlayers();
 }
@@ -25,8 +25,16 @@ void Game::printStartMsg() const {
             << n_player << "players" << std::endl;
 }
 void Game::printEndMsg() const {
-  std::cout << "Game end" << std::endl
-            << "Player " << winnerId << " wins!" << std::endl;
+  assert(winnerIds.size() > 0 && "No one wins.");
+  std::cout << "Game end" << std::endl << "Player " << winnerIds[0];
+  if (winnerIds.size() > 1) {
+    for (int i = 1; i < (int)winnerIds.size(); i++) {
+      std::cout << ", " << winnerIds[i];
+    }
+    std::cout << " win!" << std::endl;
+  } else {
+    std::cout << " wins!" << std::endl;
+  }
 }
 void Game::drawCard() { players[currentPlayerId]->draw(pool.next()); }
 
@@ -42,9 +50,12 @@ void Game::printPlayer() const {
     }
   }
   std::cout << "---------------------" << std::endl
-            << "[Game info] Round:" << round << ". Turn to Player " << currentPlayerId
-            << std::endl
-            << "\tp2:" << c[2] << std::endl
+            << "[Game info] Round:" << round << ". Turn to Player "
+            << currentPlayerId << std::endl;
+  if (currentPlayerId == 0) {  // Human Player
+    std::cout << "Cards remains in card pool: " << pool.count() << std::endl;
+  }
+  std::cout << "\tp2:" << c[2] << std::endl
             << "p1:" << c[1] << "\t\t"
             << "p3:" << c[3] << std::endl
             << "\tp0:" << c[0] << std::endl;
@@ -69,10 +80,8 @@ void loveletter::Game::executeAction() {
 
 static void switchHandCard(Player* lhs, Player* rhs) {
   Card tmp = lhs->getHandCard()[0];
-  lhs->discard();
-  lhs->draw(rhs->getHandCard()[0]);
-  rhs->discard();
-  rhs->draw(tmp);
+  lhs->switchCard(rhs->getHandCard()[0]);
+  rhs->switchCard(tmp);
 }
 
 void loveletter::Game::update() {
@@ -90,29 +99,31 @@ void loveletter::Game::update() {
       }
       break;
     case 2:
-      std::cout << "[Game Info] Target Player" << action.playerId << std::endl
+      std::cout << "[Game Info] Target Player " << action.playerId << std::endl
                 << "[Game Info] Player" << action.playerId << "'s card is "
                 << players[action.playerId]->getHandCard()[0] << std::endl;
       break;
     case 3:
-      std::cout << "[Game Info] Target Player" << action.playerId << std::endl;
+      std::cout << "[Game Info] Target Player " << action.playerId << std::endl;
       if (players[currentPlayerId]->getHandCard()[0] >
           players[action.playerId]->getHandCard()[0]) {
         players[action.playerId]->isAlive = false;
-        std::cout << "[Game Info] Player " << action.playerId << " is dead."
-                  << std::endl;
+        std::cout << "[Game Info] Player " << action.playerId
+                  << " is dead, holding the card "
+                  << players[action.playerId]->getHandCard()[0] << std::endl;
       } else if (players[currentPlayerId]->getHandCard()[0] <
                  players[action.playerId]->getHandCard()[0]) {
         players[currentPlayerId]->isAlive = false;
-        std::cout << "[Game Info] Player " << currentPlayerId << " is dead."
-                  << std::endl;
+        std::cout << "[Game Info] Player " << currentPlayerId
+                  << " is dead, holding the card "
+                  << players[currentPlayerId]->getHandCard()[0] << std::endl;
       }
       break;
     case 4:
       players[currentPlayerId]->isSave = true;
       break;
     case 5:
-      std::cout << "[Game Info] Target Player" << action.playerId << std::endl;
+      std::cout << "[Game Info] Target Player " << action.playerId << std::endl;
       players[action.playerId]->discard();
       if (pool.count() > 0) {
         players[action.playerId]->draw(pool.next());
@@ -121,7 +132,7 @@ void loveletter::Game::update() {
       }
       break;
     case 6: {
-      std::cout << "[Game Info] Target Player" << action.playerId << std::endl;
+      std::cout << "[Game Info] Target Player " << action.playerId << std::endl;
       switchHandCard(players[action.playerId], players[currentPlayerId]);
       break;
     }
@@ -159,7 +170,7 @@ void loveletter::Game::checkEnd() {
     return;
   }
   int count = 0;
-  for (int i = 0; i < players.size(); i++) {
+  for (int i = 0; i < (int)players.size(); i++) {
     count += players[i]->isAlive;
   }
   assert(count && "Error: All player dead.");
@@ -171,17 +182,21 @@ void loveletter::Game::checkEnd() {
 }
 
 void loveletter::Game::updateWinner() {
-  winnerId = -1;
   Card card;  // 0
   std::cout << "------------------" << std::endl;
   std::cout << "Player\tCard" << std::endl;
-  for (int i = 0; i < players.size(); i++) {
+  // Check largest card
+  // Check winner
+  for (int i = 0; i < (int)players.size(); i++) {
     assert(players[i]->getHandCard().size() == 1);
     if (players[i]->isAlive) {
       std::cout << i << "\t" << players[i]->getHandCard()[0] << std::endl;
       if (players[i]->getHandCard()[0] > card) {
-        winnerId = i;
+        winnerIds = {};
+        winnerIds.push_back(i);
         card = players[i]->getHandCard()[0];
+      } else if (players[i]->getHandCard()[0] == card) {
+        winnerIds.push_back(i);
       }
     }
   }
@@ -204,6 +219,5 @@ void Game::destructPlayers() {
   for (int i = 0; i < n_player; i++) {
     delete players[i];
   }
-  players = {};
 }
 }  // namespace loveletter
