@@ -24,6 +24,15 @@ $ cd LoveLetter-BoardGame
 $ make
 ```
 
+or with meson:
+
+```
+$ git clone https://github.com/liu-chien/LoveLetter-BoardGame.git
+$ cd LoveLetter-BoardGame
+$ meson build
+$ ninja -C build  # The executable LoveLetter-BoardGame is in build/ instead of bin/
+```
+
 ## Run
 ```
 $ ./bin/LoveLetter-BoardGame
