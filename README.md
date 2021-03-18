@@ -33,6 +33,14 @@ $ meson build
 $ ninja -C build  # The executable LoveLetter-BoardGame is in build/ instead of bin/
 ```
 
+or with CMake
+```
+$ git clone https://github.com/liu-chien/LoveLetter-BoardGame.git
+$ cd LoveLetter-BoardGame
+$ cmake .
+$ make  # The executable LoveLetter-BoardGame is in ./ instead of bin/
+```
+
 ## Run
 ```
 $ ./bin/LoveLetter-BoardGame

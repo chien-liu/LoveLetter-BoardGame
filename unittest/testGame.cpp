@@ -28,12 +28,32 @@ TEST(GAME, DrawCard) {
 
 TEST(GAME, Guard) {
   Game game(4);
+  game.currentPlayerId = 0;
+  game.players[1]->handCards[0] = Card(2);
+  game.action.playCard = Card(1);
+  game.action.guessCard = Card(2);
+  game.action.playerId = 1;
+  game.update();
+  EXPECT_FALSE(game.players[1]->isAlive);
+}
+TEST(GAME, GuardSelf) {
+  Game game(4);
+  game.currentPlayerId = 0;
   game.players[0]->handCards[0] = Card(2);
   game.action.playCard = Card(1);
   game.action.guessCard = Card(2);
   game.action.playerId = 0;
   game.update();
-  EXPECT_FALSE(game.players[0]->isAlive);
+  EXPECT_TRUE(game.players[0]->isAlive);
+}
+
+TEST(GAME, PriestSelf) {
+  Game game(4);
+  game.currentPlayerId = 0;
+  game.players[0]->handCards[0] = Card(8);
+  game.action.playCard = Card(2);
+  game.action.playerId = 0;
+  game.update();
 }
 
 TEST(GAME, Baron) {
@@ -58,6 +78,16 @@ TEST(GAME, King) {
   game.update();
   EXPECT_EQ(game.players[0]->handCards[0], Card(4));
   EXPECT_EQ(game.players[1]->handCards[0], Card(5));
+}
+
+TEST(GAME, KingSelf) {
+  Game game(4);
+  game.currentPlayerId = 0;
+  game.players[0]->handCards[0] = Card(5);
+  game.action.playCard = Card(6);
+  game.action.playerId = 0;
+  game.update();
+  EXPECT_EQ(game.players[0]->handCards[0], Card(5));
 }
 
 TEST(GAME, End){

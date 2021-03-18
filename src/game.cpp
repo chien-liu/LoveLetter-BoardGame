@@ -90,18 +90,30 @@ void loveletter::Game::update() {
   players[currentPlayerId]->isSave = false;
   switch (action.playCard.getNum()) {
     case 1:
-      std::cout << "[Game Info] Target Player " << action.playerId << std::endl
-                << "[Game Info] Guess card " << action.guessCard << std::endl;
-      if (players[action.playerId]->getHandCard()[0] == action.guessCard) {
-        players[action.playerId]->isAlive = false;
-        std::cout << "[Game Info] Player " << action.playerId << " is dead."
-                  << std::endl;
+      if (action.playerId == currentPlayerId) {
+        std::cout << "[Game Info] Target Player " << currentPlayerId
+                  << ". No effect." << std::endl;
+      } else {
+        std::cout << "[Game Info] Target Player " << action.playerId
+                  << std::endl
+                  << "[Game Info] Guess card " << action.guessCard << std::endl;
+        if (players[action.playerId]->getHandCard()[0] == action.guessCard) {
+          players[action.playerId]->isAlive = false;
+          std::cout << "[Game Info] Player " << action.playerId << " is dead."
+                    << std::endl;
+        }
       }
       break;
     case 2:
-      std::cout << "[Game Info] Target Player " << action.playerId << std::endl
-                << "[Game Info] Player" << action.playerId << "'s card is "
-                << players[action.playerId]->getHandCard()[0] << std::endl;
+      if (action.playerId == currentPlayerId) {
+        std::cout << "[Game Info] Target Player " << currentPlayerId
+                  << ". No effect." << std::endl;
+      } else {
+        std::cout << "[Game Info] Target Player " << action.playerId
+                  << std::endl
+                  << "[Game Info] Player" << action.playerId << "'s card is "
+                  << players[action.playerId]->getHandCard()[0] << std::endl;
+      }
       break;
     case 3:
       std::cout << "[Game Info] Target Player " << action.playerId << std::endl;
