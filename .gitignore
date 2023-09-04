@@ -10,6 +10,7 @@ object/*.o
 # folders
 .vscode/*
 CMakeFiles/*
+build/*
 
 # other files
 CMakeFiles.txt
