@@ -37,13 +37,20 @@ or with CMake
 ```
 $ git clone https://github.com/liu-chien/LoveLetter-BoardGame.git
 $ cd LoveLetter-BoardGame
-$ cmake .
-$ make  # The executable LoveLetter-BoardGame is in ./ instead of bin/
+$ mkdir build && cd build
+$ cmake ..
+$ cmake --build .
 ```
 
 ## Run
+Execute game
 ```
-$ ./bin/LoveLetter-BoardGame
+$ ./LoveLetter-BoardGame
+```
+
+Unittest
+```
+$ ./unittest
 ```
 
 # Tested environments
