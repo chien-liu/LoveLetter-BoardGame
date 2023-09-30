@@ -26,11 +26,12 @@ namespace loveletter
     friend std::ostream &operator<<(std::ostream &, const Card &);
 
   private:
-    const int num;
-    const std::string name;
+    int num;
+    std::string name;
     static const std::map<int, const std::string> dict;
     const std::string &initializeName(int);
   };
 
+  // void swap(Card&, Card&);
 } // namespace loveletter
 #endif
