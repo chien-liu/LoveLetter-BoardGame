@@ -17,7 +17,7 @@ TEST(CARDPILE, Initialization)
 TEST(CARDPILE, Next)
 {
   CardPile pile(4);
-  Card *card = pile.next();
+  pile.next();
   EXPECT_EQ(pile.count(), 14);
 }
 

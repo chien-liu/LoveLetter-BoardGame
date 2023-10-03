@@ -27,9 +27,18 @@ TEST(PlayerGroup, OverloadArraySubscriptOperator)
 {
     std::vector<std::string> ss = {"player_A", "player_B"};
     int start_id = 0;
-    PlayerGroup players {ss, start_id};
+    PlayerGroup players{ss, start_id};
     EXPECT_EQ(players[0]->name, "player_A");
     EXPECT_EQ(players[1]->name, "player_B");
+}
+
+TEST(PlayerGroup, CreateAIandHuman)
+{
+    std::vector<std::string> ss = {"AI_player_A", "player_B"};
+    int start_id = 0;
+    PlayerGroup players{ss, start_id};
+    EXPECT_EQ(typeid(*players[0]), typeid(AI));
+    EXPECT_EQ(typeid(*players[1]), typeid(Human));
 }
 
 TEST(PlayerGroup, Next)
@@ -78,9 +87,23 @@ TEST(PlayerGroup, OthersExcludeDeath)
 {
     std::vector<std::string> ss = {"player_A", "player_B", "player_C"};
     int start_id = 0;
-    PlayerGroup players {ss, start_id};
+    PlayerGroup players{ss, start_id};
     players[1]->isAlive = false;
 
     EXPECT_EQ(players.others().size(), 1);
     EXPECT_EQ(players.others()[0]->name, "player_C");
+}
+
+TEST(PlayerGroup, numAlivePlayers)
+{
+    std::vector<std::string> ss = {"player_A", "player_B", "player_C"};
+    int start_id = 0;
+    PlayerGroup players{ss, start_id};
+    EXPECT_EQ(players.numAlivePlayers(), 3);
+
+    players[2]->isAlive = false;
+    EXPECT_EQ(players.numAlivePlayers(), 2);
+
+    players[1]->isAlive = false;
+    EXPECT_EQ(players.numAlivePlayers(), 1);
 }
