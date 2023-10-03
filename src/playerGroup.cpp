@@ -5,9 +5,8 @@
 
 namespace loveletter
 {
-    PlayerGroup::PlayerGroup(std::initializer_list<std::string> ss, int i)
-        : currentId(i),
-          numAlivePlayer(ss.size())
+    PlayerGroup::PlayerGroup(const std::initializer_list<std::string> &ss, int i)
+        : currentId(i)
     {
         for (auto name : ss)
         {
@@ -19,8 +18,7 @@ namespace loveletter
     }
 
     PlayerGroup::PlayerGroup(const std::vector<std::string> &ss, int i)
-        : currentId(i),
-          numAlivePlayer(ss.size())
+        : currentId(i)
     {
         for (auto name : ss)
         {
@@ -39,6 +37,11 @@ namespace loveletter
         }
     }
 
+    std::size_t PlayerGroup::size() const
+    {
+        return allPlayers.size();
+    }
+
     AbstractPlayer *PlayerGroup::operator[](std::size_t idx)
     {
         return allPlayers[idx];
@@ -54,16 +57,15 @@ namespace loveletter
         return allPlayers[currentId];
     }
 
-    AbstractPlayer *PlayerGroup::next()
+    void PlayerGroup::next()
     {
         int idx = currentId;
 
-        currentId = (currentId + 1) % numAlivePlayer;
+        currentId = (currentId + 1) % allPlayers.size();
         while ((*this)[currentId]->isAlive == false && currentId != idx)
         {
-            currentId = (currentId + 1) % numAlivePlayer;
+            currentId = (currentId + 1) % allPlayers.size();
         }
-        return (*this)[currentId];
     }
 
     std::vector<AbstractPlayer *> PlayerGroup::others()
@@ -71,11 +73,26 @@ namespace loveletter
         std::vector<AbstractPlayer *> others;
         for (auto p : allPlayers)
         {
-            if (p->isAlive && p->name!=this->current()->name)
+            if (p->isAlive && p->name != this->current()->name)
             {
                 others.push_back(p);
             }
         }
         return others;
+    }
+
+    std::vector<AbstractPlayer *> PlayerGroup::all()
+    {
+        return allPlayers;
+    }
+
+    int PlayerGroup::numAlivePlayers() const
+    {
+        int count = 0;
+        for (auto p : allPlayers)
+        {
+            count += p->isAlive;
+        }
+        return count;
     }
 }

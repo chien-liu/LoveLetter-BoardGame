@@ -7,19 +7,21 @@ namespace loveletter
     class PlayerGroup
     {
         std::vector<AbstractPlayer *> allPlayers;
-        int numAlivePlayer;
 
     public:
         int currentId;
+        std::size_t size() const;
+        int numAlivePlayers() const;
         AbstractPlayer *current();
         std::vector<AbstractPlayer *> others();
+        std::vector<AbstractPlayer *> all();
 
-        PlayerGroup(std::initializer_list<std::string>, int);
+        PlayerGroup(const std::initializer_list<std::string>&, int);
         PlayerGroup(const std::vector<std::string> &, int);
         ~PlayerGroup();
         AbstractPlayer *operator[](std::size_t);
         AbstractPlayer const *const operator[](std::size_t) const;
-        AbstractPlayer *next();
+        void next();
     };
 
 } // namespace loveletter
