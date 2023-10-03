@@ -11,13 +11,13 @@ namespace loveletter
     const std::string name;
     bool isAlive = true;
     bool isProtected = false;
-    std::vector<Card> hand = {};
+    std::vector<Card const *> hand = {};
 
-    void drawCard(Card *);
+    void drawCard(Card *const);
 
-    AbstractPlayer(std::string s);
+    AbstractPlayer(const std::string &);
     virtual ~AbstractPlayer() = 0;
-    virtual Card playCard() = 0;
+    virtual Card const *playCard() = 0;
     // virtual const std::string &choosePlayer(std::vector<std::string &>) = 0;
     // virtual int chooseCardId() = 0;
   };
@@ -25,12 +25,12 @@ namespace loveletter
   class AI : public AbstractPlayer
   {
   public:
-    AI(std::string);
+    AI(const std::string &);
     AI(const AI &) = delete;
     ~AI();
     AI &operator=(const AI &) = delete;
 
-    Card playCard() override;
+    Card const *playCard() override;
     // const std::string &choosePlayer(std::vector<std::string &>) override;
     // int chooseCardId() override;
   };
@@ -38,14 +38,14 @@ namespace loveletter
   class Human : public AbstractPlayer
   {
   public:
-    Human(std::string s);
+    Human(const std::string &);
     ~Human();
-    Card playCard() override;
+    Card const *playCard() override;
     // const std::string &choosePlayer(std::vector<std::string &>) override;
     // int chooseCardId() override;
 
-  // private:
-  //   bool leftOrRight();
+    // private:
+    //   bool leftOrRight();
   };
 } // namespace loveletter
 #endif

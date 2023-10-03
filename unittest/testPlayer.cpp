@@ -24,17 +24,17 @@ TEST(PLAYER, DrawCard)
   Card c2{2};
   AI ai{"AI"};
   ai.drawCard(&c1);
-  EXPECT_EQ(ai.hand[0], Card(1));
+  EXPECT_EQ(*ai.hand[0], Card(1));
   ai.drawCard(&c2);
-  EXPECT_EQ(ai.hand[1], Card(2));
+  EXPECT_EQ(*ai.hand[1], Card(2));
 
   Card c3{3};
   Card c4{4};
   Human h{"Chien"};
   h.drawCard(&c3);
-  EXPECT_EQ(h.hand[0], Card(3));
+  EXPECT_EQ(*h.hand[0], Card(3));
   h.drawCard(&c4);
-  EXPECT_EQ(h.hand[1], Card(4));
+  EXPECT_EQ(*h.hand[1], Card(4));
 }
 
 TEST(PLAYER, PlayCardSucceed)
@@ -45,7 +45,7 @@ TEST(PLAYER, PlayCardSucceed)
   ai.drawCard(&c1);
   ai.drawCard(&c2);
   ai.playCard();
-  EXPECT_EQ(ai.hand[0], Card(1));
+  EXPECT_EQ(*ai.hand[0], Card(1));
 }
 
 TEST(PLAYER, PlayCardFail)

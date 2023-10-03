@@ -31,7 +31,5 @@ namespace loveletter
     static const std::map<int, const std::string> dict;
     const std::string &initializeName(int);
   };
-
-  // void swap(Card&, Card&);
 } // namespace loveletter
 #endif

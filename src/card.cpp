@@ -35,10 +35,4 @@ namespace loveletter
 
   const std::map<int, const std::string> Card::dict = {
       {0, ""}, {1, "Guard"}, {2, "Priest"}, {3, "Baron"}, {4, "Handmaid"}, {5, "Prince"}, {6, "King"}, {7, "Countess"}, {8, "Princess"}};
-
-  // void swap(Card& a, Card& b){
-  //   Card tmp = a;
-  //   a = b;
-  //   b = tmp;
-  // }
 }
