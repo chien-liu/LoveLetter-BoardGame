@@ -13,13 +13,13 @@ namespace loveletter
     bool isProtected = false;
     std::vector<Card const *> hand = {};
 
-    void drawCard(Card *const);
+    void drawCard(Card const *);
 
     AbstractPlayer(const std::string &);
     virtual ~AbstractPlayer() = 0;
     virtual Card const *playCard() = 0;
-    // virtual const std::string &choosePlayer(std::vector<std::string &>) = 0;
-    // virtual int chooseCardId() = 0;
+    virtual AbstractPlayer * selectPlayer(std::vector<AbstractPlayer *>) = 0;
+    virtual int selectCard() = 0;
   };
 
   class AI : public AbstractPlayer
@@ -31,8 +31,8 @@ namespace loveletter
     AI &operator=(const AI &) = delete;
 
     Card const *playCard() override;
-    // const std::string &choosePlayer(std::vector<std::string &>) override;
-    // int chooseCardId() override;
+    AbstractPlayer * selectPlayer(std::vector<AbstractPlayer *>) override;
+    int selectCard() override;
   };
 
   class Human : public AbstractPlayer
@@ -41,11 +41,8 @@ namespace loveletter
     Human(const std::string &);
     ~Human();
     Card const *playCard() override;
-    // const std::string &choosePlayer(std::vector<std::string &>) override;
-    // int chooseCardId() override;
-
-    // private:
-    //   bool leftOrRight();
+    AbstractPlayer * selectPlayer(std::vector<AbstractPlayer *>) override;
+    int selectCard() override;
   };
 } // namespace loveletter
 #endif
