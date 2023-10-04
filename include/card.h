@@ -3,39 +3,33 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <string>
 
-namespace loveletter {
-class Card {
- public:
-  Card() : num(0), name(nullptr){};
-  Card(int n) : num(n), name(dict.at(num)){};
+namespace loveletter
+{
+  class Card
+  {
+  public:
+    Card(int);
+    Card(const Card &);
 
-  int getNum() const noexcept { return num; }
-  const char* getName() const noexcept { return name; }
+    int getNum() const noexcept;
+    const std::string &getName() const noexcept;
 
-  bool operator==(const Card& other) const;
-  bool operator!=(const Card& other) const;
-  bool operator>(const Card& other) const;
-  bool operator<(const Card& other) const;
+    bool operator==(const Card &) const;
+    bool operator!=(const Card &) const;
+    bool operator>(const Card &) const;
+    bool operator<(const Card &) const;
+    bool operator>=(const Card &) const;
+    bool operator<=(const Card &) const;
 
-  friend std::ostream& operator<<(std::ostream& stream, const Card& card);
+    friend std::ostream &operator<<(std::ostream &, const Card &);
 
- private:
-  int num;
-  const char* name;
-  static const std::map<int, const char*> dict;
-};
-
-class CardPool {
- public:
-  CardPool(int n_player);
-  Card next();
-  Card GetReservedCard();
-  int count() const { return pile.size(); }
-
- private:
-  std::vector<Card> pile;
-  Card reserved_card;
-};
-}  // namespace loveletter
+  private:
+    int num;
+    std::string name;
+    static const std::map<int, const std::string> dict;
+    const std::string &initializeName(int);
+  };
+} // namespace loveletter
 #endif

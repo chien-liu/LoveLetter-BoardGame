@@ -1,51 +1,74 @@
 #include "gtest/gtest.h"
 
-#define private public
-#define protected public
 #include "player.h"
-#undef private
-#undef protected
+#include "card.h"
 
 using namespace loveletter;
 
-TEST(PLAYER, Initialization) {
-  AI p(0);
-  EXPECT_EQ(p.id, 0);
-  EXPECT_TRUE(p.isAlive);
-  EXPECT_TRUE(p.getHandCard().empty());
-  EXPECT_FALSE(p.isSave);
+TEST(PLAYER, Initialization)
+{
+  AI ai{"MyAI"};
+  EXPECT_TRUE(ai.isAlive);
+  EXPECT_FALSE(ai.isProtected);
+  EXPECT_TRUE(ai.hand.empty());
+
+  Human h{"Chien"};
+  EXPECT_TRUE(h.isAlive);
+  EXPECT_FALSE(h.isProtected);
+  EXPECT_TRUE(h.hand.empty());
 }
 
-TEST(PLAYER, DrawCard) {
-  AI p(0);
-  p.draw(Card(1));
-  EXPECT_EQ(p.getHandCard()[0], Card(1));
-  p.draw(Card(2));
-  EXPECT_EQ(p.getHandCard()[1], Card(2));
+TEST(PLAYER, DrawCard)
+{
+  Card c1{1};
+  Card c2{2};
+  AI ai{"AI"};
+  ai.drawCard(&c1);
+  EXPECT_EQ(*ai.hand[0], Card(1));
+  ai.drawCard(&c2);
+  EXPECT_EQ(*ai.hand[1], Card(2));
+
+  Card c3{3};
+  Card c4{4};
+  Human h{"Chien"};
+  h.drawCard(&c3);
+  EXPECT_EQ(*h.hand[0], Card(3));
+  h.drawCard(&c4);
+  EXPECT_EQ(*h.hand[1], Card(4));
 }
 
-TEST(PLAYER, Discard) {
-  AI p(0);
-  p.draw(Card(1));
-  p.discard();
-  EXPECT_TRUE(p.getHandCard().empty());
+TEST(PLAYER, PlayCardSucceed)
+{
+  Card c1{1};
+  Card c2{1};
+  AI ai{"ai"};
+  ai.drawCard(&c1);
+  ai.drawCard(&c2);
+  ai.playCard();
+  EXPECT_EQ(*ai.hand[0], Card(1));
 }
 
-TEST(PLAYER, DiscardPrincess) {
-  AI p(0);
-  p.draw(Card(8));
-  p.discard();
-  EXPECT_FALSE(p.isAlive);
-}
+TEST(PLAYER, PlayCardFail)
+{
+  Card c1{1};
+  Card c2{2};
+  Card c3{3};
+  AI ai{"ai"};
+  EXPECT_THROW(ai.playCard(), std::runtime_error); // not enough cards in hand
+  ai.drawCard(&c1);
+  EXPECT_THROW(ai.playCard(), std::runtime_error); // not enough cards in hand
+  ai.drawCard(&c2);
+  ai.drawCard(&c3);
+  EXPECT_THROW(ai.playCard(), std::runtime_error); // too many cards in hand
 
-TEST(PLAYER, ExecuteAction1) {
-  AI p(0);
-  p.draw(Card(1));
-  p.draw(Card(1));
-  PlayerAction action = p.executeAction({1, 2, 3});
-  EXPECT_EQ(action.playCard, Card(1));
-  EXPECT_NE(action.guessCard, Card(1));
-  EXPECT_NE(action.guessCard, Card(0));
-  EXPECT_NE(action.playerId, 0);
-  EXPECT_NE(action.playerId, -1);
+  Card c4{4};
+  Card c5{5};
+  Card c6{6};
+  Human h{"Chien"};
+  EXPECT_THROW(h.playCard(), std::runtime_error); // not enough cards in hand
+  h.drawCard(&c4);
+  EXPECT_THROW(h.playCard(), std::runtime_error); // not enough cards in hand
+  h.drawCard(&c5);
+  h.drawCard(&c6);
+  EXPECT_THROW(h.playCard(), std::runtime_error); // too many cards in hand
 }

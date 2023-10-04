@@ -1,32 +1,33 @@
 #include "gtest/gtest.h"
-
-#define private public
 #include "card.h"
-#undef private
 
 using namespace loveletter;
 
-TEST(CARD, Constructor) {
-  Card card;
-  EXPECT_TRUE(card == Card(0));
+TEST(CARD, ConstructorSuccess)
+{
+  Card card{1};
+  Card card2 = card;
+  Card card3 = Card(8);
 }
 
-TEST(CARD, Overload) {
-  EXPECT_EQ(Card(1), Card(1));
-  EXPECT_NE(Card(1), Card(2));
-  EXPECT_GT(Card(2), Card(1));
-  EXPECT_LT(Card(1), Card(2));
+TEST(CARD, ConstructorFail)
+{
+  EXPECT_THROW(Card(0), std::invalid_argument);
+  EXPECT_THROW(Card(9), std::invalid_argument);
 }
 
-TEST(CARDPOOL, Initialization) {
-  CardPool pool1(4);
-  EXPECT_EQ(pool1.count(), 15);
-  CardPool pool2(2);
-  EXPECT_EQ(pool2.count(), 13);
-}
+TEST(CARD, Comparison)
+{
+  Card card1{1};
+  Card card2{2};
+  EXPECT_EQ(card1, card1);
+  EXPECT_NE(card1, card2);
 
-TEST(CARDPOOL, Next) {
-  CardPool pool(4);
-  pool.next();
-  EXPECT_EQ(pool.count(), 14);
+  EXPECT_GT(card2, card1);
+  EXPECT_LT(card1, card2);
+
+  EXPECT_GE(card2, card1);
+  EXPECT_GE(card1, card1);
+  EXPECT_LE(card1, card2);
+  EXPECT_LE(card1, card1);
 }
