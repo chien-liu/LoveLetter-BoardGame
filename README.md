@@ -18,22 +18,7 @@ p1:Δ            p3:O
 
 
 # Build
-```
-$ git clone https://github.com/liu-chien/LoveLetter-BoardGame.git
-$ cd LoveLetter-BoardGame
-$ make
-```
-
-or with meson:
-
-```
-$ git clone https://github.com/liu-chien/LoveLetter-BoardGame.git
-$ cd LoveLetter-BoardGame
-$ meson build
-$ ninja -C build  # The executable LoveLetter-BoardGame is in build/ instead of bin/
-```
-
-or with CMake
+with CMake
 ```
 $ git clone https://github.com/liu-chien/LoveLetter-BoardGame.git
 $ cd LoveLetter-BoardGame
@@ -50,6 +35,9 @@ $ ./LoveLetter-BoardGame
 
 Unittest
 ```
+$ mkdir build && cd build
+$ cmake .. -DTEST=ON
+$ cmake --build .
 $ ./unittest
 ```
 

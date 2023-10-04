@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iostream>
 #include <random>
+#include <unistd.h>
 
 #include "card.h"
 
@@ -26,9 +27,10 @@ namespace loveletter
   {
     if (hand.size() != 2)
       throw std::runtime_error("Invalid size of hand");
-    // std::random_shuffle(hand.begin(), hand.end());
+    std::random_shuffle(hand.begin(), hand.end());
     Card const *output = hand.back();
     hand.pop_back();
+    sleep(3);
     return output;
   }
 
@@ -40,7 +42,7 @@ namespace loveletter
 
   int AI::selectCard()
   {
-    return std::rand() % 8 + 1;
+    return std::rand() % 7 + 2; // 2-8
   }
 
   // Human
@@ -52,7 +54,16 @@ namespace loveletter
   {
     if (hand.size() != 2)
       throw std::runtime_error("Invalid size of hand");
-    return hand[0];
+    std::cout << "Select a card to play (1/2):\n";
+    std::cout << 1 << " : " << *hand[0] << std::endl;
+    std::cout << 2 << " : " << *hand[1] << std::endl;
+    int i = -1;
+    while (i != 1 && i != 2){
+      std::cin >> i;
+    }
+    Card const *output = hand[--i];
+    hand.erase(hand.begin()+i);
+    return output;
   }
 
   AbstractPlayer *Human::selectPlayer(std::vector<AbstractPlayer *> v)

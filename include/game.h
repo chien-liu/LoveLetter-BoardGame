@@ -5,37 +5,38 @@
 #include <vector>
 
 #include "card.h"
+#include "cardPile.h"
 #include "player.h"
+#include "playerGroup.h"
 
-namespace loveletter {
-class Game {
- public:
-  Game(const int n_player);
-  ~Game();
-  void drawCard();
-  void executeAction();
-  void update();
-  void checkEnd();
-  void updateWinner();
-  void printStartMsg() const;
-  void printEndMsg() const;
-  void printPlayer() const;
-  bool isEnd() const { return end; }
+namespace loveletter
+{
+  class Game
+  {
+  private:
+    CardPile pile;
+    PlayerGroup players;
+    int currentRound = 1;
 
- private:
-  const int n_player;
-  int round;
-  bool end;
-  CardPool pool;
-  std::vector<Player*> players;
-  int currentPlayerId;
-  PlayerAction action;
-  std::vector<int> winnerIds;
+    AbstractPlayer *targetPlayer = nullptr;
+    Card const *activateCardptr = nullptr;
+    int assassinatedCardNumber = -1;
 
- private:
-  void constructPlayers();
-  void destructPlayers();
-};
-}  // namespace loveletter
+    std::vector<AbstractPlayer const *> checkWinner() const;
 
+  public:
+    Game(const std::vector<std::string> &, int);
+    ~Game();
+
+    void drawCard();
+    void playCard();
+    void update();
+    bool notEnd() const;
+
+    friend void printStartMsg(const Game &);
+    friend void printEndMsg(const Game &);
+    friend void printPlayers(const Game &);
+  };
+
+} // namespace loveletter
 #endif

@@ -1,27 +1,33 @@
 #include <iostream>
-
-#include "game.h"
 #include <time.h>
 #include <random>
 
+#include "game.h"
 
-int main(int argc, char *argv[]) {
-  srand(time(NULL));
-
-  loveletter::Game game(4);   // 4 players
-
-  game.printStartMsg();
-
-  while (!game.isEnd()) {
-    game.drawCard();
-    game.printPlayer();
-    game.executeAction();
-    game.update();
-    game.checkEnd();
+int main(int argc, char *argv[])
+{
+  const int numPlayers = 4;  // 4 players
+  std::vector<std::string> playerNames;
+  playerNames.push_back("Human");
+  for (int i = 1; i < numPlayers; i++)
+  {
+    playerNames.push_back("AI_" + std::to_string(i));
   }
 
-  game.updateWinner();
-  game.printEndMsg();
+  srand(time(nullptr));
+  int firstPlayerIdx = std::rand() % numPlayers;
+  loveletter::Game game(playerNames, firstPlayerIdx); 
+  printStartMsg(game);
+
+  while (game.notEnd())
+  {
+    printPlayers(game);
+    game.drawCard();
+    game.playCard();
+    game.update();
+  }
+
+  printEndMsg(game);
 
   return 0;
 }

@@ -57,6 +57,11 @@ namespace loveletter
         return allPlayers[currentId];
     }
 
+    AbstractPlayer const *PlayerGroup::current() const
+    {
+        return allPlayers[currentId];
+    }
+
     void PlayerGroup::next()
     {
         int idx = currentId;

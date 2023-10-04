@@ -13,6 +13,7 @@ namespace loveletter
         std::size_t size() const;
         int numAlivePlayers() const;
         AbstractPlayer *current();
+        AbstractPlayer const *current() const;
         std::vector<AbstractPlayer *> others();
         std::vector<AbstractPlayer *> all();
 
