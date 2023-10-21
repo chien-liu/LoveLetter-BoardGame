@@ -5,40 +5,36 @@
 #undef private
 #undef protected
 
-#include <vector>
 #include <string>
+#include <vector>
 using namespace loveletter;
 
-TEST(GAME, Initialization)
-{
+TEST(GAME, Initialization) {
   std::vector<std::string> ss = {"AI_1", "AI_2", "AI_3", "AI_4"};
   Game game(ss, 0);
   EXPECT_TRUE(game.notEnd());
   EXPECT_EQ(game.players.size(), 4);
   EXPECT_TRUE(game.pile.count() == 11);
-  for (auto p : game.players.all())
-  {
+  for (auto p : game.players.all()) {
     EXPECT_NE(p->hand[0], nullptr);
   }
   EXPECT_EQ(game.players.currentId, 0);
 }
 
-TEST(GAME, DrawCard)
-{
+TEST(GAME, DrawCard) {
   std::vector<std::string> ss = {"AI_1", "AI_2", "AI_3", "AI_4"};
   Game game(ss, 0);
   game.drawCard();
   EXPECT_NE(game.players.current()->hand[1], nullptr);
 }
 
-TEST(GAME, Guard)
-{
+TEST(GAME, Guard) {
   std::vector<std::string> ss = {"AI_1", "AI_2", "AI_3", "AI_4"};
   Game game(ss, 0);
-  Card card1 {1};
-  Card card2 {2};
+  Card card1{1};
+  Card card2{2};
   game.players[1]->hand[0] = &card2;
-  game.activateCardptr= &card1;
+  game.activateCardptr = &card1;
   game.assassinatedCardNumber = 2;
   game.targetPlayer = game.players[1];
   game.update();

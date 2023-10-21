@@ -1,12 +1,11 @@
 #include "gtest/gtest.h"
 
-#include "player.h"
 #include "card.h"
+#include "player.h"
 
 using namespace loveletter;
 
-TEST(PLAYER, Initialization)
-{
+TEST(PLAYER, Initialization) {
   AI ai{"MyAI"};
   EXPECT_TRUE(ai.isAlive);
   EXPECT_FALSE(ai.isProtected);
@@ -18,8 +17,7 @@ TEST(PLAYER, Initialization)
   EXPECT_TRUE(h.hand.empty());
 }
 
-TEST(PLAYER, DrawCard)
-{
+TEST(PLAYER, DrawCard) {
   Card c1{1};
   Card c2{2};
   AI ai{"AI"};
@@ -37,8 +35,7 @@ TEST(PLAYER, DrawCard)
   EXPECT_EQ(*h.hand[1], Card(4));
 }
 
-TEST(PLAYER, PlayCardSucceed)
-{
+TEST(PLAYER, PlayCardSucceed) {
   Card c1{1};
   Card c2{1};
   AI ai{"ai"};
@@ -48,8 +45,7 @@ TEST(PLAYER, PlayCardSucceed)
   EXPECT_EQ(*ai.hand[0], Card(1));
 }
 
-TEST(PLAYER, PlayCardFail)
-{
+TEST(PLAYER, PlayCardFail) {
   Card c1{1};
   Card c2{2};
   Card c3{3};
