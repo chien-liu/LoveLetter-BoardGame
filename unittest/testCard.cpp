@@ -1,23 +1,20 @@
-#include "gtest/gtest.h"
 #include "card.h"
+#include "gtest/gtest.h"
 
 using namespace loveletter;
 
-TEST(CARD, ConstructorSuccess)
-{
+TEST(CARD, ConstructorSuccess) {
   Card card{1};
   Card card2 = card;
   Card card3 = Card(8);
 }
 
-TEST(CARD, ConstructorFail)
-{
+TEST(CARD, ConstructorFail) {
   EXPECT_THROW(Card(0), std::invalid_argument);
   EXPECT_THROW(Card(9), std::invalid_argument);
 }
 
-TEST(CARD, Comparison)
-{
+TEST(CARD, Comparison) {
   Card card1{1};
   Card card2{2};
   EXPECT_EQ(card1, card1);
