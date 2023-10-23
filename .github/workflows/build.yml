@@ -12,8 +12,26 @@ jobs:
       run: |
         mkdir ${{ github.workspace }}/build
         cd ${{ github.workspace }}/build
-        cmake ..
+        cmake .. -DTEST=ON
     - name: CMake build
       run: |
         cd ${{ github.workspace }}/build
         cmake --build .
+    - uses: actions/upload-artifact@v3
+      with:
+        name: unittest-artifects
+        path: ${{ github.workspace }}/build/unittest
+
+  unittest:
+    runs-on: ubuntu-lateest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v3
+        with:
+          name: unittest-artifects
+          path: .
+      - name: Run unittest
+        run: |
+          ./unittest
