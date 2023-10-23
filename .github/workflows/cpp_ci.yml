@@ -29,10 +29,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Create directory for unittest executable
+        run: mkdir ${{ github.workspace }}/bin
       - uses: actions/download-artifact@v3
         with:
           name: unittest-artifects
+          path: ${{ github.workspace }}/bin/
       - name: Run unittest
         run: |
+          cd ${{ github.workspace }}/bin
           chmod +x unittest
           ./unittest
