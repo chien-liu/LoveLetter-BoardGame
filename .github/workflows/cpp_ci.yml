@@ -1,0 +1,42 @@
+name: C/C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: CMake config
+      run: |
+        mkdir ${{ github.workspace }}/build
+        cd ${{ github.workspace }}/build
+        cmake .. -DTEST=ON
+    - name: CMake build
+      run: |
+        cd ${{ github.workspace }}/build
+        cmake --build .
+    - uses: actions/upload-artifact@v3
+      with:
+        name: unittest-artifects
+        path: ${{ github.workspace }}/build/unittest
+        retention-days: 1
+
+  unittest:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create directory for unittest executable
+        run: mkdir ${{ github.workspace }}/bin
+      - uses: actions/download-artifact@v3
+        with:
+          name: unittest-artifects
+          path: ${{ github.workspace }}/bin/
+      - name: Run unittest
+        run: |
+          cd ${{ github.workspace }}/bin
+          chmod +x unittest
+          ./unittest
