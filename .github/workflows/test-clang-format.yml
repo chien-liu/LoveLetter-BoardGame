@@ -12,5 +12,5 @@ jobs:
       with:
         source: '.'
         extensions: 'h,cpp'
-        clangFormatVersion: 14
+        clangFormatVersion: 10
         style: chromium
