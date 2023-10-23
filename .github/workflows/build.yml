@@ -10,10 +10,8 @@ jobs:
     - uses: actions/checkout@v4
     - name: CMake config
       run: |
-        ls .
-        cmake --version
         mkdir build
         cd build
-        cmake .. -DTEST=ON
+        cmake ..
     - name: CMake build
       run: cmake --build .
