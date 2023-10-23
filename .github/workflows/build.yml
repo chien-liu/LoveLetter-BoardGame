@@ -14,4 +14,6 @@ jobs:
         cd build
         cmake ..
     - name: CMake build
-      run: cmake --build .
+      run: |
+        pwd
+        cmake --build .
