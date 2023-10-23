@@ -21,6 +21,7 @@ jobs:
       with:
         name: unittest-artifects
         path: ${{ github.workspace }}/build/unittest
+        retention-days: 1
 
   unittest:
     runs-on: ubuntu-latest
@@ -33,4 +34,5 @@ jobs:
           name: unittest-artifects
       - name: Run unittest
         run: |
+          chmod +x unittest
           ./unittest
