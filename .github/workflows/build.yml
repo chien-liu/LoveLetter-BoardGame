@@ -31,7 +31,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: unittest-artifects
-          path: .
       - name: Run unittest
         run: |
           ./unittest
